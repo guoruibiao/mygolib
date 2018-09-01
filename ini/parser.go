@@ -7,7 +7,7 @@ import (
 )
 
 // 读取ini文件到对应的字典中
-func read_ini_file(filepath string) map[string]map[string]string {
+func read_ini_file(filepath string) (map[string]map[string]string, error) {
 	ret := make(map[string]map[string]string)
 	bytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
@@ -33,23 +33,26 @@ func read_ini_file(filepath string) map[string]map[string]string {
 		}
 		ret[member] = tmpmember
 	}
-	return ret
+	return ret, nil
 	//return make(map[string]map[string]string)
 }
 
 
-func get_ini_member(filepath string, member string) map[string]string {
-	ret := read_ini_file(filepath)[member]
-	//fmt.Println(ret)
-	return ret
+func get_ini_member(filepath string, member string) (map[string]string, error) {
+	ret, err := read_ini_file(filepath)
+	if err != nil {
+		return _, err
+	}
+	return ret[member], nil
+	
 }
 
 func main() {
 	filepath := "./config.ini"
 	//ret := read_ini_file(filepath)
 	//fmt.Println(ret)
-	user := get_ini_member(filepath, "User")
+	user, _ := get_ini_member(filepath, "User")
 	fmt.Println(user["name"])
-	deploy := get_ini_member(filepath, "Deploy")
+	deploy, _ := get_ini_member(filepath, "Deploy")
 	fmt.Println(deploy["debug"])
 }
