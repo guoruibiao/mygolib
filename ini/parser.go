@@ -27,6 +27,9 @@ func read_ini_file(filepath string) (map[string]map[string]string, error) {
 			if line == "" {
 				continue
 			}
+			if strings.IndexRune(line, ';') == 0 {
+				continue
+			}
 			item := strings.Split(line, "=")
 			key, value := item[0], item[1]
 			tmpmember[key] = value
