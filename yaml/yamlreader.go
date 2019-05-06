@@ -26,6 +26,14 @@ type Config struct {
  * - struct变量成员名小写时不符合golang的导出规则, 导致json.Marshal(其使用了reflect)无法反射到内容.
  * - struct内的成员变量小写就只有当前包内可以访问。如果把json.Marshal(hp) 这个方法的重新实现在main方法下面，struct中的成员变量就可以小写了
  */
+// Struct fields are only unmarshalled if they are exported (have an
+// upper case first letter), and are unmarshalled using the field name
+// lowercased as the default key. Custom keys may be defined via the
+// "yaml" name in the field tag: the content preceding the first comma
+// is used as the key, and the following comma-separated options are
+// used to tweak the marshalling process (see Marshal).
+// Conflicting names result in a runtime error.
+// see more: https://github.com/go-yaml/yaml/yaml.go
 
 func main() {
 
