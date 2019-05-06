@@ -7,19 +7,25 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-//Nginx nginx  配置
+//DB配置
 type Db struct {
 	Dbname  string `yaml:"dbname"`
 	Charset string `yaml:"charset"`
 	Index   []int  `yaml:"index"`
 }
 
-//Config   系统配置配置
+//Config
 type Config struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
 	Db   Db     `yaml:"db"`
 }
+
+/* 有点奇怪，属性首字母小写就无法访问了
+ * 翻了翻网上的解答：
+ * - struct变量成员名小写时不符合golang的导出规则, 导致json.Marshal(其使用了reflect)无法反射到内容.
+ * - struct内的成员变量小写就只有当前包内可以访问。如果把json.Marshal(hp) 这个方法的重新实现在main方法下面，struct中的成员变量就可以小写了
+ */
 
 func main() {
 
